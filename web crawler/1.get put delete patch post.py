@@ -1,9 +1,6 @@
 import requests
 import codecs
 
-#網路爬蟲作業
-#get網路資料
-
 r1 = requests.get(
     "http://teaching.bo-yuan.net/test/requests/",
     params={"action":"action"}
@@ -47,5 +44,5 @@ r1 = requests.post(
 r1.encoding= "utf-8"
 
 print(r1.text)
-#哈哈，答對了，請把操作過程中的所有指令保留在程式碼中，將檔案繳交上來。
+
 
