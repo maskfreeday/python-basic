@@ -1,7 +1,5 @@
 #MySQL應用
-
 ##環境建構
-
 程式語言:python
 網頁伺服器:XAMPP
 
