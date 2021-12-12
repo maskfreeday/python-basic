@@ -1,1 +1,22 @@
+## mysql
+資料庫本身就是存放資料的地方
+資料整理可用軟體就是資料庫管理系統(DBMS, database management system)
+透過資料庫管理系統有效率將資料存好，並且管理好位置
 
+可用軟體主要分為
+1. 關聯式資料庫(RDBMS,Relational =SQL資料庫):把資料用一個一個表格存放起來，再用關聯存起來
+MySQL
+Oracle
+PostgreSQL
+SQL server
+ACID，是指資料庫管理系統（DBMS）在寫入或更新資料的過程中，為保證事務（transaction）是正確可靠的，所必須具備的四個特性：
+1. 原子性（Atomicity，或稱不可分割性）:所有操作，不是全部完成或全部不完成，不會結束在中間某個環節。如果中間有錯會回覆到為進行更改前的樣子。
+2.一致性（Consistency):在事務開始之前和事務結束以後，資料庫的完整性沒有被破壞。這表示寫入的資料必須完全符合所有的預設約束、觸發器、級聯回滾等
+3.隔離性（Isolation，又稱獨立性）:資料庫允許多個並發事務同時對其數據進行讀寫和修改的能力，隔離性可以防止多個事務並發執行時由於交叉執行而導致數據的不一致。事務隔離分為不同級別，包括未提交讀（Read uncommitted）、提交讀（read committed）、可重複讀（repeatable read）和串行化（Serializable）
+4.持久性（Durability）:事務處理結束後，對數據的修改就是永久的，即便系統故障也不會丟失。
+
+2. 非關聯式資料庫(NRDMBS,not just sql / noSQL) :儲存方式會根據軟體不同
+MongoDB:文件導向的資料庫管理系統，用C++等語言撰寫而成
+Redis
+DynamoDB
+Elastricsearch
