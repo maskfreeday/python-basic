@@ -64,4 +64,9 @@ id=primary key主鍵=唯一表示每一筆資料=通常橘色背景
 | 4 |  行銷  |
 | 5 |  管理  |
 
+primary key
+其實可以一次使用兩個
+![](https://i.imgur.com/j6zurKF.png)
 
+也也可以設定成三四個都行
+37:00
