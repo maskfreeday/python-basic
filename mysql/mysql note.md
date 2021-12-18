@@ -70,3 +70,73 @@ primary key
 
 也也可以設定成三四個都行
 37:00
+
+進入Workbench程式畫面
+![](https://i.imgur.com/fqVpTxD.png)
+
+創建資料庫
+展示資料庫
+
+mysql關鍵字:mysql語法，為藍色
+建議使用大寫區別語法跟命名名稱
+命名名稱建議使用 
+```
+CREATE DATABASE `database`;
+SHOW DATABASES;
+DROP DATABASE `database`;
+```
+
+常見指令
+![](https://i.imgur.com/qTt9XNv.png)
+```
+INT 
+DECIMAL(M,N) M:總共有幾位數 N:小數點後占幾位 
+VARCHAR(N) 字串:純文字,M:最多可以存放幾個字元
+BLOB 
+DATE
+TIMESTAMP
+```
+
+
+實際練習
+建立表格
+![](https://i.imgur.com/v0qHMsj.png)
+![](https://i.imgur.com/PAAyKVF.png)
+也可以更改寫法
+```
+CREATE TABLE `student`(
+	`student_id` INT PRIMARY KEY,
+    `name` VARCHAR(20),
+    `major` VARCHAR(20),
+    PRIMARY KEY(`student_id`)
+    );	
+```
+
+增加屬性(TABLE)
+```
+ALTER TABLE `student` ADD gpa DECIMAL(3,2);    
+```
+gpa指的是屬性名稱
+DECIMAL(3,2) 給他一個範圍值 0.00
+
+刪除屬性
+```
+ALTER TABLE `student` DROP COLUMN gpa;
+```
+存入資料(data) INSERT
+
+![](https://i.imgur.com/i6gmUo0.png)
+
+INSERT 資料庫 VALUES(`student_id`,`name`,`major`)
+
+也可以透過新增時，加入`NULL`，跳過要輸入的值
+
+```
+INSERT INTO `student` VALUES(1, '小白', '歷史');
+INSERT INTO `student` VALUES(2, '小黑', '生物');
+INSERT INTO `student` VALUES(3, '小綠', NULL);
+
+INSERT INTO `student` (`name`, `major`, `student_id`)VALUES( '小藍', '英語', 4);
+INSERT INTO `student` ( `major`, `student_id`)VALUES( '英語', 5);
+SELECT * FROM `student`; 
+```
