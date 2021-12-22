@@ -140,3 +140,142 @@ INSERT INTO `student` (`name`, `major`, `student_id`)VALUES( '小藍', '英語',
 INSERT INTO `student` ( `major`, `student_id`)VALUES( '英語', 5);
 SELECT * FROM `student`; 
 ```
+
+**限制約束語法(constraints)**  
+在創建表格時就可以先行對表格的輸入值做預設  
+對此表格自動照順序新增Primary key  
+姓名: 20字以內 不可為空值
+主修科目: 20字以內 預設為歷史
+```
+CREATE TABLE `student01`(
+	`student_id01` INT AUTO_INCREMENT,
+    `name` VARCHAR(20) NOT NULL,
+    `major` VARCHAR(20) DEFAULT '歷史',
+    PRIMARY KEY(`student_id01`)
+);	
+
+NOT NULL 不能為空值
+UNIQUE 只能是唯一一個值
+DEFAULT 預設為
+```
+透過新增value進行測試
+```
+INSERT INTO `student01` VALUES(1, '小白', '歷史');
+INSERT INTO `student01` VALUES(2, '小黑', '生物');
+INSERT INTO `student01` VALUES(3, '小綠', NULL);
+    
+INSERT INTO `student01` (`name`, `major`)VALUES( '小藍', '英語');    
+SELECT * FROM `student01`; 
+```
+
+![](https://i.imgur.com/NvMMc0o.png)
+
+**修改、刪除資料**
+
+首先你要先重新建立好資料庫
+```
+CREATE DATABASE `database`;
+SHOW DATABASES;
+USE `sql_tutorial`;
+```
+創建表格
+
+```
+CREATE TABLE `student02`(
+	`student_id` INT AUTO_INCREMENT,
+    `name` VARCHAR(20),
+    `major` VARCHAR(20),
+    `score` INT,
+    PRIMARY KEY(`student_id`)
+);	
+```
+輸入好的值
+
+```
+INSERT INTO `student02` VALUES( 1, '小白', '歷史', 50);
+INSERT INTO `student02` VALUES( 2, '小黃', '生物', 90);
+INSERT INTO `student02` VALUES( 3, '小綠', '英文', 70);
+INSERT INTO `student02` VALUES( 4, '小藍', '數學', 80);
+INSERT INTO `student02` VALUES( 5, '小紫', '公民', 20);
+```
+![](https://i.imgur.com/2waytzv.png)
+
+再來就可以修改輸入
+
+首先因為mysql有個叫SQL_SAFE_UPDATES的變數
+
+開啟的狀態下，在沒有 WHERE 或 LIMIT 條件的 UPDATE 或 DELETE 動作會拒絕執行而即使是有 WHERE 和 LIMIT 條件，但沒有 KEY column 的 WHERE 條件也會拒絕執行。
+因此必須加入  
+
+SET 要改成甚麼   
+WHERE 條件:要去哪邊改資料
+```
+SET SQL_SAFE_UPDATES=0; 關閉安全模式
+UPDATE `student02` SET `major` = '英語文學' WHERE `major` = '英文';
+SET SQL_SAFE_UPDATES=1; 開啟安全模式
+```
+![](https://i.imgur.com/CWt5JLX.png)
+
+也可以選擇修改第幾個student_id 後再進行修改裡面的major
+```
+UPDATE `student02` SET `major` = '生物' WHERE `student_id` = 4;
+```
+![](https://i.imgur.com/7NrnaWT.png)
+
+也可以一次修改多個條件
+例如將歷史跟生物都改成 生物演化
+
+
+```
+UPDATE `student02` SET `major` = '生物演化' WHERE `major` = '歷史' or `major` = '生物';
+```
+![](https://i.imgur.com/KAnIhPx.png)
+
+```
+UPDATE `student02` SET `name` = '小灰', `major` = '物理' WHERE `student_id` = 1;
+```
+
+![](https://i.imgur.com/TIgeF5Z.png)
+```
+UPDATE `student02` SET `major` = '物理';
+```
+![](https://i.imgur.com/EblMieI.png)
+
+刪除資料  
+透過條件不同都可以修改
+
+```
+DELETE FROM `student02` WHERE `student_id`=4;
+```
+![](https://i.imgur.com/pbRrExj.png)  
+也可以對條件增加and 讓兩者都符合的資料才做刪除
+
+```
+DELETE FROM `student02` WHERE `name` ='小灰' AND `major` = '物理';
+```
+![](https://i.imgur.com/IIVvhLh.png)
+
+也可以透過分數高低建立條件去做刪除
+
+```
+DELETE FROM `student02` WHERE `score` < 60;
+```
+![](https://i.imgur.com/p1MTNgd.png)
+
+以下是
+常用的比較符號
+```
+>大於
+<小於
+>= 大於等於
+<= 小於等於
+= 等於
+<> 不等於
+```
+也可以做不給where 條件做判斷
+就變成刪除整個表格
+
+```
+DELETE FROM `student02`;
+```
+![](https://i.imgur.com/tR68gC6.png)
