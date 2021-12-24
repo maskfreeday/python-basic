@@ -279,3 +279,151 @@ DELETE FROM `student02` WHERE `score` < 60;
 DELETE FROM `student02`;
 ```
 ![](https://i.imgur.com/tR68gC6.png)
+
+**取得資料**  
+取得全部表格中資料，可以透過選擇由甚麼做排序
+order by 排序
+desc 由高到低
+LIMIT 限制一次要讀取的值有幾個
+```
+SELECT * FROM `student02` ORDER BY `score` DESC LIMIT 3;
+```
+![](https://i.imgur.com/dUnRfYV.png)
+
+也可以在搜尋資料時加上條件
+where 
+and
+or
+
+```
+SELECT * FROM `student02` WHERE `major` = '歷史' and `student_id` = 1;
+```
+![](https://i.imgur.com/40zgS0Q.png)
+
+```
+SELECT * FROM `student02` WHERE `major` = '英文' OR `score` >20;
+```
+
+![](https://i.imgur.com/HWXa7og.png)
+
+也可以把上面的全部功能都混用
+搜尋主修是英文或分數不等於70分的
+列出前面兩個
+```
+SELECT * FROM `student02` WHERE `major` = '英文' OR `score` <>70  limit 2;
+```
+![](https://i.imgur.com/Ymnb5ra.png)
+
+
+IN('歷史','英語',生物)=`major` = '歷史' OR `major` = '英文' `major` = '生物'
+簡單說IN = OR OR....
+這個功能也可以跟前面的DESC AND OR 混用
+```
+SELECT * FROM `student02` WHERE `major` IN('歷史','英文','生物'); 
+```
+![](https://i.imgur.com/ArAuQ5w.png)
+
+模擬創建公司資料庫
+員工表格  
+
+```
+CREATE TABLE `employee`(
+	`emp_id` INT PRIMARY KEY,
+    `name` VARCHAR(20),
+    `birth_date` DATE,
+    `sex` VARCHAR(1),
+    `salary` INT,
+    `branch_id` INT,
+    `sup_id` INT
+);	
+```  
+員工編號 一定只能有一個所以設定為PRIMARY  
+NAME 只要設定長度20以內即可  
+生日就直接設定為DATE  
+性別 通常為男或女 直接設定長度1即可  
+branch_id 部門編號 設定為整數即可  
+sup_id 主管編號 設定為整數即可  
+
+
+部門表格  
+ On Delete 或 On Update：當發生刪除或更新動作時，依後面宣告處理。
+ ON UPDATE SET NULL
+ ON DELETE SET NULL
+ 這兩個功能可以幫助在設計MYSQL表格時，以後要刪除資料或是更新資料時方便使用
+```
+CREATE TABLE `branch`(
+	`branch_id` INT PRIMARY KEY,
+    `branch_name` VARCHAR(20),
+    `manager_id` INT,
+    foreign key (`manager_id`) REFERENCES `employee` (`emp_id`) ON DELETE SET NULL
+);
+
+```
+部門編號 設定為主鍵  
+部門名稱 名稱為二十字以內  
+員工編號 整數並且引用`employee`表格中的`emp_id`，並且當要刪除時只會將該格設定為NULL
+
+
+新增外鍵
+
+再來是新增表格屬性的部分
+
+這邊補充個知識
+一個Table表中只能有一個主鍵，但是可以有很多外鍵。主鍵與外鍵的配對就形成了Relational 關聯性 ，所以才稱作Relational database 關聯性資料庫。
+
+因此為兩個表格中有互相需要引用到的部分，進行更改資料庫結構，新增外鍵進行表格之間的關聯性建立
+
+ALTER TABLE 是用來對已存在的資料表結構作更改。
+FOREIGN KEY外鍵 新增外鍵
+
+```
+ALTER TABLE `employee`
+ADD FOREIGN KEY(`branch_id`)
+REFERENCES `branch` (`branch_id`)
+ON DELETE SET NULL;
+
+ALTER TABLE `employee`
+ADD FOREIGN KEY(`sup_id`)
+REFERENCES `employee` (`emp_id`)
+ON DELETE SET NULL;
+```
+更改`employee`表格屬性
+增加 外鍵 `branch_id`的屬性引用 表格`branch`的`branch_id`
+如果刪除就設定為null
+
+更改`employee`表格屬性
+增加 外鍵 `sup_id`的屬性引用 表格`employee`的`emp_id`
+如果刪除就設定為null
+
+客戶表格
+
+```
+CREATE TABLE `client`(
+	`client_id` INT PRIMARY KEY,
+    `client_name` VARCHAR(20),
+    `phone` VARCHAR(20)
+);
+```
+客戶編號 一定只能有一個所以設定為PRIMARY  
+NAME 只要設定長度20以內即可  
+電話號碼 只要設定長度20以內即可  
+
+
+銷售金額表格
+works_with
+客戶跟銷售員工的表格建立
+
+Cascade：所有關聯的紀錄也會跟隨刪除或更新。
+
+```
+CREATE TABLE `works_with`(
+	`emp_id` INT,
+    `client_id` INT,
+    `total_sales` INT,
+    PRIMARY KEY(`emp_id`,`client_id`),
+    FOREIGN KEY(`emp_id`) REFERENCES `employee`(`emp_id`) ON DELETE CASCADE,
+    FOREIGN KEY(`client_id`) REFERENCES `client`(`client_id`) ON DELETE CASCADE);
+```
+創建銷售金額表格
+建立`emp_id`，引用`employee`表格的`emp_id`資料 並且當有一邊資料刪除時會連同員工資料一同刪除
+建立`client_id`，引用`client`表格的`client_id`資料 並且當有一邊資料刪除時會連同顧客資料一同刪除
