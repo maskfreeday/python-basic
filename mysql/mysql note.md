@@ -427,3 +427,61 @@ CREATE TABLE `works_with`(
 創建銷售金額表格
 建立`emp_id`，引用`employee`表格的`emp_id`資料 並且當有一邊資料刪除時會連同員工資料一同刪除
 建立`client_id`，引用`client`表格的`client_id`資料 並且當有一邊資料刪除時會連同顧客資料一同刪除
+
+新增值到表格中
+以下是表格所要的值
+
+![](https://i.imgur.com/QvmtOTg.png)
+
+因為有employee表格中有foreign key的關係，
+ex:像是employee表格的branch_id沒有對應到的branch表格的branch_id
+
+沒辦法從employee表格直接開始insert
+所以要先從branch表格將值輸入進入表格並且有使用到foreign key的部分使用null輸入
+
+因此先輸入branch表格
+```
+INSERT INTO `branch` VALUES( 1, '研發', NULL);
+INSERT INTO `branch` VALUES( 2, '行政', NULL);
+INSERT INTO `branch` VALUES( 3, '資訊', NULL);
+```
+
+再輸入employee表格
+```
+INSERT INTO `employee` VALUES( 206, '小黃', '1998-10-08', 'F', 50000, 1, NULL);
+INSERT INTO `employee` VALUES( 207, '小綠', '1985-09-16', 'M', 29000, 2, 206);
+INSERT INTO `employee` VALUES( 208, '小黑', '2000-12-19', 'M', 35000, 3, 206);
+INSERT INTO `employee` VALUES( 209, '小白', '1997-01-22', 'F', 39000, 3, 207);
+INSERT INTO `employee` VALUES( 210, '小藍', '1925-11-10', 'F', 84000, 1, 207);
+```
+再將branch表格的manager_id改回來
+```
+UPDATE `branch`
+SET `manager_id` = 206
+WHERE `branch_id` =1;
+
+UPDATE `branch`
+SET `manager_id` = 207
+WHERE `branch_id` =2;
+
+UPDATE `branch`
+SET `manager_id` = 208
+WHERE `branch_id` =3;
+```
+
+最後再來新增客戶資料、銷售金額表格
+
+```
+INSERT INTO `client` VALUES( 400, '阿狗', '254354335');
+INSERT INTO `client` VALUES( 401, '阿貓', '25633899');
+INSERT INTO `client` VALUES( 402, '旺來', '45354345');
+INSERT INTO `client` VALUES( 403, '露西', '54354365');
+INSERT INTO `client` VALUES( 404, '艾瑞克', '18783783');
+
+INSERT INTO `works_with` VALUES( 206, 400, '70000');
+INSERT INTO `works_with` VALUES( 207, 401, '24000');
+INSERT INTO `works_with` VALUES( 208, 402, '9800');
+INSERT INTO `works_with` VALUES( 208, 403, '24000');
+INSERT INTO `works_with` VALUES( 210, 404, '87940');
+```
+這樣就建立完成公司資料庫的模擬喽
